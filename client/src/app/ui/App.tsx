@@ -1,6 +1,8 @@
+import { SignIn } from "~/pages/SignIn";
+
 const App = () => (
     <div>
-        Hello world
+        <SignIn />
     </div>
 )
 
