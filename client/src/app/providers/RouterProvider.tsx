@@ -1,16 +1,18 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import { Main } from "~/pages/Main";
 import { SignIn } from "~/pages/SignIn";
 import { Error } from "~/pages/Error";
 
 const router = createBrowserRouter([
     {
         path: '/',
+        element: <Main />,
         errorElement: <Error />,
-        children: [{
-            path: 'signin',
-            element: <SignIn />
-        }]
+    },
+    {
+        path: 'signin',
+        element: <SignIn />
     }
 ])
 
