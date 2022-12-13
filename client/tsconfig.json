@@ -1,8 +1,13 @@
 {
     "compilerOptions": {
+        "strict": true,
         "composite": true,
         "esModuleInterop": true,
         "jsx": "react-jsx",
         "baseUrl": "./src",
+        "types": ["node"],
+        "paths": {
+            "~/*": ["./*"]
+        }
     }
 }
