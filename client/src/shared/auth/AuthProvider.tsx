@@ -10,7 +10,7 @@ interface AuthContext {
     signOut: () => void;
 }
 
-export const AuthContext = createContext<AuthContext>(null);
+export const AuthContext = createContext<AuthContext>(null!);
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
     const [user, setUser] = useState<User | null>(null);
