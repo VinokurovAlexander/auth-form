@@ -6,3 +6,10 @@ declare module '*.module.css' {
     const classNames: ClassNames;
     export = classNames
 }
+
+declare module '*.svg' {
+    import { FC, SVGProps } from 'react';
+    const SVG: FC<SVGProps<SVGSVGElement>>;
+
+    export default SVG;
+}

@@ -1,30 +1,23 @@
-import {createContext, PropsWithChildren, useState} from "react";
-
-interface User {
-    name: string;
-}
+import { createContext, PropsWithChildren } from "react";
+import { AuthState, User, useAuthState  } from "./state";
 
 interface AuthContext {
-    user: User | null,
-    signIn: (user: User) => void;
-    signOut: () => void;
+    state: AuthState,
+    actions: {
+        signIn: (user: User) => void;
+        signOut: () => void;
+        setLoading: () => void;
+        setError: (error: string) => void;
+    }
 }
 
 export const AuthContext = createContext<AuthContext>(null!);
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
-    const [user, setUser] = useState<User | null>(null);
-
-    const signIn = (user: User) => {
-        setUser(user);
-    }
-
-    const signOut = () => {
-        setUser(null);
-    }
+    const value = useAuthState();
 
     return (
-        <AuthContext.Provider value={{ user, signIn, signOut }}>
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     )
