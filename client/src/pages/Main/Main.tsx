@@ -4,7 +4,11 @@ import { useAuth } from "~/shared/auth";
 
 
 const Main = () => {
-    const { user } = useAuth();
+    const { state: { user, loading } } = useAuth();
+
+    if (loading) {
+        return <p>Loading...</p>
+    }
 
     if (!user) {
         return <Navigate to="/signin" />

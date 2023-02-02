@@ -1,55 +1,64 @@
-import {FC, useState} from "react";
+import {FC, FormEventHandler, PropsWithChildren, useEffect} from "react";
+import {Navigate} from "react-router-dom";
 
-import { Field } from "~/components/Field";
 import { Button } from "~/components/Button";
-import { useAuth } from "~/shared/auth";
 import { Alert } from "~/components/Alert";
+import { Link } from "~/components/Link";
+import { useAuth } from "~/shared/auth";
 
 import classes from './Form.module.css';
 
-const Form: FC = () => {
-    const [mail, setMail] = useState('');
-    const [password, setPassword] = useState('');
+interface Form {
+    title: string,
+    link?: {
+        to: string,
+        title: string
+    }
+    onSubmit?: () => void;
+}
 
-    const { state: { error } ,actions: { setError, setLoading } } = useAuth();
+const Form: FC<PropsWithChildren<Form>> = ({ title, link, onSubmit, children }) => {
+    const { state: { error, user }, actions: { setError, setLoading }} = useAuth();
 
-    const handleClick = async () => {
+    const handleSubmit: FormEventHandler = e => {
+        e.preventDefault();
+
         setLoading();
 
-        const response = await fetch('http://localhost:8080/signin',
-            {
-                    method: 'POST',
-                    body: JSON.stringify({ mail, password }),
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-            });
+        onSubmit?.();
+    }
 
-        const data = await response.json();
-
-        if (response.ok) {
-            console.log(response);
-        } else {
-            setError(data.message);
+    useEffect(() => {
+        return () => {
+            setError(null)
         }
+    }, []);
+
+    if (user) {
+        return <Navigate to="/" />
     }
 
     return (
-        <div className={classes.form}>
-            <h2 className={classes.title}>Sign in</h2>
-            <Field label='Email address' name="email" id="email" required onChange={setMail} />
-            <Field label="Password" name="password" id="password" type="password" required onChange={setPassword} />
-            <Button onClick={handleClick}>
-                Sign In
-            </Button>
-            {error && (
-                <Alert>
-                    {error}
-                </Alert>
-            )}
+        <div>
+            <h2 className={classes.title}>{title}</h2>
+            <form className={classes.form} onSubmit={handleSubmit}>
+                {children}
+                <Button type="submit">
+                    {title}
+                </Button>
+                {link && (
+                    <Link to={link.to}>
+                        {link.title}
+                    </Link>
+                )}
+                {error && (
+                    <Alert>
+                        {error}
+                    </Alert>
+                )}
+            </form>
         </div>
     )
 }
-
 
 export default Form;

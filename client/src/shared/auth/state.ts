@@ -9,12 +9,6 @@ export interface AuthState {
     loading: boolean
 }
 
-const initialState = {
-    user: null,
-    error: null,
-    loading: false
-}
-
 enum Action {
     SignIn = 'SIGNIN',
     SignOut = 'SIGNOUT',
@@ -37,10 +31,16 @@ interface LoadingAction {
 
 interface ErrorAction {
     type: Action.Error,
-    payload: string
+    payload: string | null
 }
 
 type AllActions =  SignInAction | SingOutAction | LoadingAction | ErrorAction;
+
+const initialState = {
+    user: null,
+    error: null,
+    loading: false
+}
 
 const reducer = (state: AuthState, action: AllActions) => {
     const { type } = action;
@@ -72,7 +72,7 @@ const reducer = (state: AuthState, action: AllActions) => {
             const error = action.payload
 
             return {
-                ...initialState,
+                ...state,
                 error
             }
         }

@@ -7,7 +7,7 @@ interface AuthContext {
         signIn: (user: User) => void;
         signOut: () => void;
         setLoading: () => void;
-        setError: (error: string) => void;
+        setError: (error: string | null) => void;
     }
 }
 
